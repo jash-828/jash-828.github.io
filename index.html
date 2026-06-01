@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Alex Morgan — BITS Pilani · Data & Business Analyst</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --ink:      #0f0f0f;
+      --paper:    #f7f5f0;
+      --mid:      #6b6560;
+      --rule:     #dedad4;
+      --accent:   #1a4f3a;
+      --accent2:  #c8873a;
+      --white:    #ffffff;
+      --serif:    'DM Serif Display', Georgia, serif;
+      --sans:     'DM Sans', system-ui, sans-serif;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--paper);
+      color: var(--ink);
+      font-family: var(--sans);
+      font-size: 15px;
+      line-height: 1.65;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 18px 5vw;
+      background: rgba(247,245,240,0.88);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--rule);
+    }
+    .nav-logo {
+      font-family: var(--serif);
+      font-size: 1.15rem;
+      color: var(--ink);
+      text-decoration: none;
+      letter-spacing: 0.02em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--mid);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--ink); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: 72px;
+    }
+    .hero-left {
+      padding: 8vw 5vw 6vw 8vw;
+      display: flex; flex-direction: column; justify-content: center;
+    }
+    .hero-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      padding: 4px 10px;
+      border-radius: 2px;
+      margin-bottom: 2rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.1s forwards;
+    }
+    .hero-name {
+      font-family: var(--serif);
+      font-size: clamp(2.8rem, 5vw, 4.8rem);
+      line-height: 1.08;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.25s forwards;
+    }
+    .hero-name em { font-style: italic; color: var(--accent2); }
+    .hero-sub {
+      font-size: 1rem;
+      color: var(--mid);
+      max-width: 38ch;
+      margin-bottom: 2.5rem;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.4s forwards;
+    }
+    .hero-ctas {
+      display: flex; gap: 1rem; flex-wrap: wrap;
+      opacity: 0;
+      animation: fadeUp 0.6s 0.55s forwards;
+    }
+    .btn {
+      padding: 11px 24px;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      border-radius: 3px;
+      text-decoration: none;
+      transition: all 0.22s;
+      cursor: pointer;
+      border: none;
+    }
+    .btn-primary { background: var(--accent); color: var(--white); }
+    .btn-primary:hover { background: #123829; }
+    .btn-outline { background: transparent; color: var(--ink); border: 1.5px solid var(--ink); }
+    .btn-outline:hover { background: var(--ink); color: var(--white); }
+
+    .hero-right {
+      background: var(--accent);
+      display: flex; flex-direction: column;
+      justify-content: center;
+      padding: 5vw;
+      position: relative;
+      overflow: hidden;
+    }
+    .hero-grid-bg {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+    }
+    .hero-edu-card {
+      position: relative; z-index: 1;
+      border: 1px solid rgba(255,255,255,0.15);
+      padding: 2.5rem;
+      opacity: 0;
+      animation: fadeIn 0.6s 0.7s forwards;
+    }
+    .hero-edu-label {
+      font-size: 0.68rem; letter-spacing: 0.14em; text-transform: uppercase;
+      color: rgba(255,255,255,0.45); margin-bottom: 1.2rem;
+    }
+    .hero-edu-degree {
+      font-family: var(--serif); font-size: 1.5rem; color: var(--white);
+      line-height: 1.2; margin-bottom: 0.5rem;
+    }
+    .hero-edu-school {
+      font-size: 0.9rem; color: var(--accent2); font-weight: 500; margin-bottom: 1.5rem;
+    }
+    .hero-edu-divider {
+      border: none; border-top: 1px solid rgba(255,255,255,0.1); margin-bottom: 1.5rem;
+    }
+    .hero-edu-meta { display: flex; flex-direction: column; gap: 0.6rem; }
+    .hero-edu-row { display: flex; justify-content: space-between; }
+    .hero-edu-key { font-size: 0.72rem; color: rgba(255,255,255,0.4); letter-spacing: 0.06em; text-transform: uppercase; }
+    .hero-edu-val { font-size: 0.82rem; color: rgba(255,255,255,0.85); font-weight: 500; }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 6rem 8vw; }
+    .section-header { margin-bottom: 3.5rem; }
+    .section-label {
+      font-size: 0.72rem;
+      font-weight: 500;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 0.6rem;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.8rem, 3vw, 2.6rem);
+      line-height: 1.15;
+    }
+    hr.rule { border: none; border-top: 1px solid var(--rule); margin-bottom: 3.5rem; }
+
+    /* ── EDUCATION (full section) ── */
+    #education { background: var(--white); }
+    .edu-main {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 2rem;
+    }
+    .edu-card {
+      padding: 2rem; border: 1px solid var(--rule); border-radius: 4px;
+    }
+    .edu-card.featured { border-color: var(--accent); border-width: 2px; }
+    .edu-degree { font-family: var(--serif); font-size: 1.1rem; margin-bottom: 0.3rem; }
+    .edu-school { font-size: 0.85rem; font-weight: 500; color: var(--accent); margin-bottom: 0.25rem; }
+    .edu-year { font-size: 0.78rem; color: var(--mid); margin-bottom: 0.8rem; }
+    .edu-detail { font-size: 0.82rem; color: var(--mid); }
+    .coursework-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 0.6rem;
+    }
+    .course-pill {
+      background: var(--paper); border: 1px solid var(--rule);
+      padding: 0.5rem 0.8rem; border-radius: 3px;
+      font-size: 0.78rem; color: var(--mid);
+    }
+
+    /* ── SKILLS ── */
+    #skills { background: var(--paper); }
+    .skills-intro { font-size: 0.92rem; color: var(--mid); max-width: 52ch; margin-bottom: 2.5rem; margin-top: -1rem; }
+
+    /* Proficiency table */
+    .skills-table { width: 100%; border-collapse: collapse; margin-bottom: 2.5rem; }
+    .skills-table thead tr { border-bottom: 2px solid var(--rule); }
+    .skills-table th {
+      text-align: left; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mid); padding: 0 1rem 0.8rem 0; font-weight: 500;
+    }
+    .skills-table tbody tr { border-bottom: 1px solid var(--rule); }
+    .skills-table tbody tr:last-child { border-bottom: none; }
+    .skills-table td { padding: 1rem 1rem 1rem 0; vertical-align: middle; }
+    .skill-row-name { font-size: 0.88rem; font-weight: 500; min-width: 160px; }
+    .skill-row-cat { font-size: 0.72rem; color: var(--accent2); font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase; }
+    .skill-bar-wrap { background: var(--rule); border-radius: 2px; height: 5px; width: 100%; min-width: 120px; }
+    .skill-bar { height: 5px; border-radius: 2px; background: var(--accent); }
+    .skill-level-label { font-size: 0.72rem; color: var(--mid); width: 80px; text-align: right; }
+    .skill-context { font-size: 0.8rem; color: var(--mid); max-width: 260px; }
+
+    /* Tools row */
+    .tools-section-title {
+      font-size: 0.72rem; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--mid); margin-bottom: 1rem; font-weight: 500;
+    }
+    .tools-flex { display: flex; flex-wrap: wrap; gap: 0.5rem; }
+    .tool-chip {
+      font-size: 0.76rem; font-weight: 500;
+      padding: 5px 12px; border-radius: 20px;
+      border: 1px solid var(--rule); background: var(--white); color: var(--ink);
+      letter-spacing: 0.02em;
+    }
+
+    /* ── EXPERIENCE ── */
+    #experience { background: var(--white); }
+    .exp-list { display: flex; flex-direction: column; }
+    .exp-item {
+      display: grid;
+      grid-template-columns: 200px 1fr;
+      gap: 3vw;
+      padding: 2.5rem 0;
+      border-bottom: 1px solid var(--rule);
+    }
+    .exp-item:first-child { padding-top: 0; }
+    .exp-meta { padding-top: 0.2rem; }
+    .exp-period { font-size: 0.78rem; color: var(--mid); letter-spacing: 0.04em; margin-bottom: 0.3rem; }
+    .exp-company { font-size: 0.82rem; font-weight: 500; color: var(--accent); }
+    .exp-role { font-family: var(--serif); font-size: 1.25rem; margin-bottom: 0.6rem; }
+    .exp-type {
+      display: inline-block; font-size: 0.68rem; font-weight: 500;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      background: var(--accent); color: var(--white);
+      padding: 2px 8px; border-radius: 2px; margin-bottom: 0.8rem;
+    }
+    .exp-type.intern { background: var(--accent2); }
+    .exp-type.club { background: var(--ink); }
+    .exp-desc { font-size: 0.88rem; color: var(--mid); margin-bottom: 1rem; }
+    .exp-bullets { list-style: none; display: flex; flex-direction: column; gap: 0.4rem; }
+    .exp-bullets li { font-size: 0.85rem; color: var(--mid); padding-left: 1.2rem; position: relative; }
+    .exp-bullets li::before { content: '→'; position: absolute; left: 0; color: var(--accent2); font-size: 0.8rem; }
+
+    /* ── PROJECTS ── */
+    #projects { background: var(--paper); }
+    .projects-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+    .project-card {
+      background: var(--white);
+      border: 1px solid var(--rule);
+      padding: 2rem;
+      border-radius: 4px;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .project-card:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(0,0,0,0.07); }
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 0.8rem; }
+    .project-title { font-family: var(--serif); font-size: 1.15rem; }
+    .project-link { font-size: 0.8rem; color: var(--accent); text-decoration: none; font-weight: 500; }
+    .project-link:hover { text-decoration: underline; }
+    .project-desc { font-size: 0.85rem; color: var(--mid); margin-bottom: 1.2rem; }
+    .project-stack { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+    .tag {
+      font-size: 0.68rem; font-weight: 500; letter-spacing: 0.06em; text-transform: uppercase;
+      background: var(--rule); color: var(--mid); padding: 3px 8px; border-radius: 2px;
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--accent);
+      text-align: center;
+      padding: 6rem 5vw;
+    }
+    #contact .section-label { color: rgba(255,255,255,0.5); }
+    #contact .section-title { color: var(--white); margin-bottom: 1.2rem; }
+    #contact p { color: rgba(255,255,255,0.6); max-width: 44ch; margin: 0 auto 2.5rem; font-size: 0.95rem; }
+    .contact-links { display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap; }
+    .contact-btn {
+      padding: 11px 24px; font-size: 0.82rem; font-weight: 500;
+      letter-spacing: 0.06em; text-transform: uppercase;
+      border-radius: 3px; text-decoration: none; transition: all 0.2s;
+    }
+    .contact-btn.light { background: var(--white); color: var(--accent); }
+    .contact-btn.light:hover { background: var(--paper); }
+    .contact-btn.ghost { background: transparent; color: var(--white); border: 1.5px solid rgba(255,255,255,0.35); }
+    .contact-btn.ghost:hover { border-color: var(--white); }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--ink); color: rgba(255,255,255,0.35);
+      text-align: center; padding: 1.8rem;
+      font-size: 0.78rem; letter-spacing: 0.06em;
+    }
+
+    /* ── ANIMATIONS ── */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(18px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 900px) {
+      #hero { grid-template-columns: 1fr; }
+      .hero-right { min-height: auto; padding: 3rem 5vw; }
+      .edu-main { grid-template-columns: 1fr; }
+      .coursework-grid { grid-template-columns: repeat(2, 1fr); }
+      .projects-grid { grid-template-columns: 1fr; }
+      .exp-item { grid-template-columns: 1fr; gap: 0.5rem; }
+      .nav-links { display: none; }
+      .skills-table td:nth-child(4) { display: none; }
+    }
+    @media (max-width: 560px) {
+      section { padding: 4rem 5vw; }
+      .hero-left { padding: 5rem 5vw 3rem; }
+      .coursework-grid { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">Alex Morgan</a>
+  <ul class="nav-links">
+    <li><a href="#education">Education</a></li>
+    <li><a href="#skills">Skills</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#projects">Projects</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-left">
+    <span class="hero-tag">BITS Pilani · Data · Strategy</span>
+    <h1 class="hero-name">Curious mind.<br><em>Analytical</em> core.</h1>
+    <p class="hero-sub">Undergraduate at BITS Pilani with a strong foundation in data analysis, business thinking, and problem-solving. Actively seeking analyst and founder office opportunities.</p>
+    <div class="hero-ctas">
+      <a href="#projects" class="btn btn-primary">See My Work</a>
+      <a href="resume.pdf" class="btn btn-outline" download>Download CV</a>
+    </div>
+  </div>
+  <div class="hero-right">
+    <div class="hero-grid-bg"></div>
+    <div class="hero-edu-card">
+      <div class="hero-edu-label">Currently Studying At</div>
+      <div class="hero-edu-degree">B.E. Computer Science</div>
+      <div class="hero-edu-school">BITS Pilani</div>
+      <hr class="hero-edu-divider" />
+      <div class="hero-edu-meta">
+        <div class="hero-edu-row">
+          <span class="hero-edu-key">Batch</span>
+          <span class="hero-edu-val">2022 – 2026</span>
+        </div>
+        <div class="hero-edu-row">
+          <span class="hero-edu-key">CGPA</span>
+          <span class="hero-edu-val">8.4 / 10</span>
+        </div>
+        <div class="hero-edu-row">
+          <span class="hero-edu-key">Campus</span>
+          <span class="hero-edu-val">Pilani, Rajasthan</span>
+        </div>
+        <div class="hero-edu-row">
+          <span class="hero-edu-key">Status</span>
+          <span class="hero-edu-val">Open to Internships</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EDUCATION (full) -->
+<section id="education">
+  <div class="section-header">
+    <div class="section-label">Education</div>
+    <h2 class="section-title">Built on a strong<br>academic foundation.</h2>
+  </div>
+
+  <div class="edu-main">
+    <div class="edu-card featured">
+      <div class="edu-degree">B.E. Computer Science</div>
+      <div class="edu-school">Birla Institute of Technology & Science, Pilani</div>
+      <div class="edu-year">2022 – 2026 (Expected) · CGPA 8.4 / 10</div>
+      <div class="edu-detail">Pursuing a rigorous CS curriculum with electives focused on data, statistics, and business systems. Active in finance, consulting, and entrepreneurship clubs on campus.</div>
+    </div>
+    <div class="edu-card">
+      <div class="edu-degree">Class XII — Science (PCM + CS)</div>
+      <div class="edu-school">DPS RK Puram, New Delhi</div>
+      <div class="edu-year">2022 · 96.4% (CBSE)</div>
+      <div class="edu-detail">Strong foundation in mathematics and logical reasoning. Scored 99/100 in Mathematics and 98/100 in Computer Science.</div>
+    </div>
+  </div>
+
+  <div class="section-label" style="margin-bottom:1rem;">Relevant Coursework</div>
+  <div class="coursework-grid">
+    <div class="course-pill">Data Structures & Algorithms</div>
+    <div class="course-pill">Probability & Statistics</div>
+    <div class="course-pill">Linear Algebra</div>
+    <div class="course-pill">Database Management Systems</div>
+    <div class="course-pill">Principles of Economics</div>
+    <div class="course-pill">Management Information Systems</div>
+    <div class="course-pill">Operations Research</div>
+    <div class="course-pill">Foundations of Data Science</div>
+    <div class="course-pill">Financial Accounting</div>
+  </div>
+</section>
+
+<!-- SKILLS -->
+<section id="skills">
+  <div class="section-header">
+    <div class="section-label">Skills & Tools</div>
+    <h2 class="section-title">What I'm learning<br>and building with.</h2>
+  </div>
+  <p class="skills-intro">Self-taught across analytics tools through coursework, online certifications, and personal projects. Proficiency levels reflect honest self-assessment.</p>
+
+  <table class="skills-table">
+    <thead>
+      <tr>
+        <th>Skill</th>
+        <th>Category</th>
+        <th style="min-width:160px;">Proficiency</th>
+        <th></th>
+        <th>Where I've used it</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="skill-row-name">Python (Pandas, NumPy)</div></td>
+        <td><div class="skill-row-cat">Analysis</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:72%"></div></div></td>
+        <td><div class="skill-level-label">Intermediate</div></td>
+        <td><div class="skill-context">Academic projects, personal data explorations, Kaggle notebooks</div></td>
+      </tr>
+      <tr>
+        <td><div class="skill-row-name">SQL</div></td>
+        <td><div class="skill-row-cat">Analysis</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:65%"></div></div></td>
+        <td><div class="skill-level-label">Intermediate</div></td>
+        <td><div class="skill-context">DBMS coursework, Mode Analytics exercises, personal projects</div></td>
+      </tr>
+      <tr>
+        <td><div class="skill-row-name">Microsoft Excel</div></td>
+        <td><div class="skill-row-cat">Analysis</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:80%"></div></div></td>
+        <td><div class="skill-level-label">Proficient</div></td>
+        <td><div class="skill-context">Pivot tables, VLOOKUP, financial modelling basics, club operations</div></td>
+      </tr>
+      <tr>
+        <td><div class="skill-row-name">Tableau / Power BI</div></td>
+        <td><div class="skill-row-cat">Visualisation</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:50%"></div></div></td>
+        <td><div class="skill-level-label">Beginner+</div></td>
+        <td><div class="skill-context">Online certification projects, basic dashboard building</div></td>
+      </tr>
+      <tr>
+        <td><div class="skill-row-name">Statistics & Probability</div></td>
+        <td><div class="skill-row-cat">Fundamentals</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:75%"></div></div></td>
+        <td><div class="skill-level-label">Intermediate</div></td>
+        <td><div class="skill-context">Core BITS coursework, hypothesis testing, regression basics</div></td>
+      </tr>
+      <tr>
+        <td><div class="skill-row-name">Business Communication</div></td>
+        <td><div class="skill-row-cat">Soft Skills</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:78%"></div></div></td>
+        <td><div class="skill-level-label">Proficient</div></td>
+        <td><div class="skill-context">Club presentations, case competitions, written reports</div></td>
+      </tr>
+      <tr>
+        <td><div class="skill-row-name">Market Research</div></td>
+        <td><div class="skill-row-cat">Strategy</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:55%"></div></div></td>
+        <td><div class="skill-level-label">Learning</div></td>
+        <td><div class="skill-context">Case study competitions, independent research projects</div></td>
+      </tr>
+      <tr>
+        <td><div class="skill-row-name">Financial Modelling</div></td>
+        <td><div class="skill-row-cat">Finance</div></td>
+        <td><div class="skill-bar-wrap"><div class="skill-bar" style="width:42%"></div></div></td>
+        <td><div class="skill-level-label">Learning</div></td>
+        <td><div class="skill-context">Accounting coursework, CFI beginner modules</div></td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="tools-section-title">Tools & Platforms I've used</div>
+  <div class="tools-flex">
+    <span class="tool-chip">Python</span>
+    <span class="tool-chip">SQL</span>
+    <span class="tool-chip">Excel</span>
+    <span class="tool-chip">Google Sheets</span>
+    <span class="tool-chip">Tableau Public</span>
+    <span class="tool-chip">Power BI Desktop</span>
+    <span class="tool-chip">Jupyter Notebook</span>
+    <span class="tool-chip">Git & GitHub</span>
+    <span class="tool-chip">Notion</span>
+    <span class="tool-chip">Canva</span>
+    <span class="tool-chip">Google Analytics</span>
+    <span class="tool-chip">Figma (basics)</span>
+  </div>
+</section>
+
+<!-- EXPERIENCE (campus / extracurricular) -->
+<section id="experience">
+  <div class="section-header">
+    <div class="section-label">Experience</div>
+    <h2 class="section-title">Campus roles &<br>early exposure.</h2>
+  </div>
+  <hr class="rule" />
+  <div class="exp-list">
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Aug 2023 — Present</div>
+        <div class="exp-company">BITS Finance Club</div>
+      </div>
+      <div class="exp-body">
+        <span class="exp-type club">Campus Club</span>
+        <h3 class="exp-role">Core Member — Research & Analytics</h3>
+        <p class="exp-desc">Part of the research vertical responsible for market analysis notes, stock coverage reports, and student-facing economic briefings.</p>
+        <ul class="exp-bullets">
+          <li>Authored 4 sector reports on Indian fintech and consumer tech for internal distribution</li>
+          <li>Built an Excel-based stock screener used by 20+ club members during semester investing simulation</li>
+          <li>Presented weekly macroeconomic updates to an audience of 60+ students</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">Jan 2024 — Apr 2024</div>
+        <div class="exp-company">ECell BITS Pilani</div>
+      </div>
+      <div class="exp-body">
+        <span class="exp-type club">Campus Club</span>
+        <h3 class="exp-role">Operations & Strategy — E-Summit Team</h3>
+        <p class="exp-desc">Part of the core organizing team for E-Summit 2024, BITS Pilani's flagship entrepreneurship festival attracting 1,500+ participants.</p>
+        <ul class="exp-bullets">
+          <li>Managed logistics and scheduling coordination across 8 event verticals</li>
+          <li>Built sponsor outreach tracking sheet that improved follow-up rate by 35%</li>
+          <li>Analysed post-event survey data to generate an insights report for the next edition</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="exp-item">
+      <div class="exp-meta">
+        <div class="exp-period">May 2024 — Jun 2024</div>
+        <div class="exp-company">Self-Initiated</div>
+      </div>
+      <div class="exp-body">
+        <span class="exp-type intern">Project Work</span>
+        <h3 class="exp-role">Independent Research — EdTech Market Analysis</h3>
+        <p class="exp-desc">Independently scoped and executed a 6-week market research project on the Indian K-12 EdTech landscape, motivated by a case competition prompt.</p>
+        <ul class="exp-bullets">
+          <li>Conducted 12 primary interviews with students, parents, and tutors across 3 cities</li>
+          <li>Mapped competitive positioning of top 8 EdTech players using publicly available data</li>
+          <li>Produced a 24-slide deck with TAM estimates and go-to-market recommendations</li>
+        </ul>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- PROJECTS -->
+<section id="projects">
+  <div class="section-header">
+    <div class="section-label">Projects</div>
+    <h2 class="section-title">Things I've built<br>to learn by doing.</h2>
+  </div>
+  <div class="projects-grid">
+    <div class="project-card">
+      <div class="project-header">
+        <h3 class="project-title">IPL Auction Analytics</h3>
+        <a href="#" class="project-link">GitHub →</a>
+      </div>
+      <p class="project-desc">Scraped and analysed 5 years of IPL auction data to identify which player attributes correlated with price premiums. Built visualisations showing team bidding strategies over time.</p>
+      <div class="project-stack">
+        <span class="tag">Python</span><span class="tag">Pandas</span><span class="tag">Matplotlib</span><span class="tag">BeautifulSoup</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-header">
+        <h3 class="project-title">Campus Canteen Demand Model</h3>
+        <a href="#" class="project-link">View →</a>
+      </div>
+      <p class="project-desc">Collected 3 months of canteen sales data and built a simple regression model to predict peak-hour demand. Presented findings to the Student Union as a proof-of-concept for inventory optimisation.</p>
+      <div class="project-stack">
+        <span class="tag">Excel</span><span class="tag">Python</span><span class="tag">Regression</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-header">
+        <h3 class="project-title">EdTech Market Research Deck</h3>
+        <a href="#" class="project-link">View →</a>
+      </div>
+      <p class="project-desc">End-to-end market research project on K-12 EdTech in India. Covered TAM/SAM sizing, competitive positioning, and primary research findings across 12 interviews.</p>
+      <div class="project-stack">
+        <span class="tag">Research</span><span class="tag">Excel</span><span class="tag">PowerPoint</span>
+      </div>
+    </div>
+    <div class="project-card">
+      <div class="project-header">
+        <h3 class="project-title">Personal Finance Dashboard</h3>
+        <a href="#" class="project-link">GitHub →</a>
+      </div>
+      <p class="project-desc">Built an interactive Tableau dashboard to track personal spending categories, savings rate, and month-on-month trends. Pulls from a structured Google Sheet updated weekly.</p>
+      <div class="project-stack">
+        <span class="tag">Tableau</span><span class="tag">Google Sheets</span><span class="tag">Data Viz</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="section-label">Get In Touch</div>
+  <h2 class="section-title">Open to internships<br>& collaborations.</h2>
+  <p>If you're building something interesting and need an eager analyst or a sharp generalist in your founder office — I'd love to connect.</p>
+  <div class="contact-links">
+    <a href="mailto:alex@bits-pilani.ac.in" class="contact-btn light">Send Email</a>
+    <a href="https://linkedin.com/in/example" class="contact-btn ghost" target="_blank">LinkedIn</a>
+    <a href="https://github.com/example" class="contact-btn ghost" target="_blank">GitHub</a>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  &copy; 2026 Alex Morgan &nbsp;·&nbsp; BITS Pilani &nbsp;·&nbsp; Hosted on GitHub Pages
+</footer>
+
+</body>
+</html>
